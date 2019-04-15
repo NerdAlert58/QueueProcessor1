@@ -12,6 +12,18 @@ namespace QueueProcessor1.Objects
         public int Priority { get; set; }
         public int Burst { get; set; }
         public int Arrival { get; set; }
+
+        public bool Validate() 
+        {
+            if (Priority >= 0 && Burst >= 1 && Arrival >= 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public enum Color {
