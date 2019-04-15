@@ -5,8 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QueueProcessor1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="700" Width="1050">
     <Grid>
-        
-    </Grid>
+
+		<Grid Name="dataTable" Margin="0,0,0,327">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<Label Grid.Column="0">Process</Label>
+			<Label Grid.Column="1">Burst Time</Label>
+			<Label Grid.Column="2">Priority</Label>
+			<Label Grid.Column="3">Arrival</Label>
+
+			<TextBox Grid.Row="1">P0</TextBox>
+			<TextBox Grid.Row="2">P1</TextBox>
+			<TextBox Grid.Row="3">P2</TextBox>
+			<TextBox Grid.Row="4">P3</TextBox>
+			<TextBox Grid.Row="5">P4</TextBox>
+
+			<TextBox Grid.Row="1" Grid.Column="1">15</TextBox>
+			<TextBox Grid.Row="2" Grid.Column="1">25</TextBox>
+			<TextBox Grid.Row="3" Grid.Column="1">30</TextBox>
+			<TextBox Grid.Row="4" Grid.Column="1">15</TextBox>
+			<TextBox Grid.Row="5" Grid.Column="1">15</TextBox>
+
+		</Grid>
+		<Grid Name="queuegrid" Margin="10,378,24,41"/>
+
+	</Grid>
 </Window>
