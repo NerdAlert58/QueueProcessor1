@@ -12,6 +12,12 @@ namespace QueueProcessor1.Objects
         public int Priority { get; set; }
         public int Burst { get; set; }
         public int Arrival { get; set; }
+
+        public bool Validate()
+        {
+            // Ian will write this.
+            return true;
+        }
     }
 
     public enum Color {
