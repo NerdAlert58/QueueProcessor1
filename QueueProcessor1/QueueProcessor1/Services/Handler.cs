@@ -65,9 +65,15 @@ namespace QueueProcessor1.Services {
                         }
                     }
 
-                    _currentProc.Burst -= 1;
                     // use 1 unit from active proc
+                    _currentProc.Burst -= 1;
+                    _timeQuantum -= 1;
+                    
                     // If proc still has more units && timeQuantum is not used up, set currentProc to this guy
+                    if (_currentProc.Burst > 0 && _timeQuantum > 0)
+                    {
+
+                    }
                     // create Event object and add to events
                 }
 
