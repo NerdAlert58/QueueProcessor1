@@ -15,14 +15,12 @@ namespace QueueProcessor1.Objects
 
         public bool Validate() 
         {
-            if (Priority >= 0 && Burst >= 1 && Arrival >= 0) 
+            if (this.Priority >= 0 && this.Burst >= 1 && this.Arrival >= 0) 
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 
