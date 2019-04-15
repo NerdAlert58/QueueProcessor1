@@ -13,10 +13,15 @@ namespace QueueProcessor1.Objects
         public int Burst { get; set; }
         public int Arrival { get; set; }
 
-        public bool Validate()
+
+        public bool Validate() 
         {
-            // Ian will write this.
-            return true;
+            if (this.Priority >= 0 && this.Burst >= 1 && this.Arrival >= 0) 
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 
