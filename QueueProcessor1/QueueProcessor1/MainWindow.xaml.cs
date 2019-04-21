@@ -23,6 +23,23 @@ namespace QueueProcessor1
         public MainWindow()
         {
             InitializeComponent();
+
+            for (int j = 0; j < 15; j++)
+            {
+                Button MyControl1 = new Button();
+                MyControl1.Content =j.ToString();
+                MyControl1.Name = "Button" + j.ToString();
+                MyControl1.SetValue(Grid.ColumnProperty, j);
+                MyControl1.Height = 35;
+                queuegrid.ColumnDefinitions.Add(new ColumnDefinition());
+                queuegrid.Children.Add(MyControl1);
+
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
