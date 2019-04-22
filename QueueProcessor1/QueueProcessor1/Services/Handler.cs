@@ -5,15 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QueueProcessor1.Services {
+namespace QueueProcessor1.Services
+{
     public class Handler
     {
         private IList<Proc> _processes { get; set; }
         private int _timeQuantum { get; set; }
         private Proc _currentProc { get; set; }
         private IDictionary<int, Event> _events { get; set; }
-        // public Proc _idleProc { get; set; }
+        private int _idleTime { get; set; }
 
+        // a.Show the scheduling order of the processes using a Gantt chart.
+        // b.What is the turnaround time for each process?
+        // c.What is the waiting time for each process?
+        // d.What is the CPU utilization rate
 
 
         public Handler(IList<Proc> processes)
@@ -22,6 +27,7 @@ namespace QueueProcessor1.Services {
             _timeQuantum = 10;
             _currentProc = null;
             _events = new Dictionary<int, Event>();
+            _idleTime = 0;
         }
 
         private Proc GetIdleProc()
@@ -32,11 +38,12 @@ namespace QueueProcessor1.Services {
                 Priority = 0,
                 Burst = 0,
                 Arrival = 0,
-                Finished = false
+                Finished = false,
+                FinishedAtIndex = 0
             };
         }
 
-        public IDictionary<int,Event> DoWork()
+        public IDictionary<int, Event> DoWork()
         {
             var finished = false;
             var index = 0;
@@ -80,7 +87,7 @@ namespace QueueProcessor1.Services {
                             if (!arr.Finished)
                             {
                                 _currentProc = arr;
-                            }                            
+                            }
                         }
                     }
                 }
@@ -91,10 +98,11 @@ namespace QueueProcessor1.Services {
                     waitQueue.RemoveAt(0);
                 }
 
-                if (_currentProc == null || string.Equals(_currentProc.Name,"IDLE"))
+                if (_currentProc == null || string.Equals(_currentProc.Name, "IDLE"))
                 {
                     // IDLE PROCESS TIME
                     _currentProc = GetIdleProc();
+                    _idleTime += 1;
                 }
                 else
                 {
@@ -113,7 +121,7 @@ namespace QueueProcessor1.Services {
                         _currentProc.FinishedAtIndex = index + 1;
                     }
                 }
-                
+
                 // create Event object and add to events
                 _events[index] = new Event()
                 {
@@ -148,7 +156,7 @@ namespace QueueProcessor1.Services {
                 {
                     finished = true;
                 }
-                
+
 
                 index++;
             }
