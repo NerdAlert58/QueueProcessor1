@@ -8,7 +8,7 @@
         Title="MainWindow" Height="700" Width="1050">
     <Grid>
 
-		<Grid Name="dataTable" Margin="0,0,0,327">
+		<Grid Name="dataTable" Margin="314,42,316,458">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition/>
 				<ColumnDefinition/>
@@ -16,6 +16,7 @@
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
+				<RowDefinition/>
 				<RowDefinition/>
 				<RowDefinition/>
 				<RowDefinition/>
@@ -34,13 +35,29 @@
 			<TextBox Grid.Row="3">P2</TextBox>
 			<TextBox Grid.Row="4">P3</TextBox>
 			<TextBox Grid.Row="5">P4</TextBox>
+			<TextBox Grid.Row="6">P4</TextBox>
 
-			<TextBox Grid.Row="1" Grid.Column="1">15</TextBox>
-			<TextBox Grid.Row="2" Grid.Column="1">25</TextBox>
-			<TextBox Grid.Row="3" Grid.Column="1">30</TextBox>
-			<TextBox Grid.Row="4" Grid.Column="1">15</TextBox>
-			<TextBox Grid.Row="5" Grid.Column="1">15</TextBox>
+			<TextBox Grid.Row="1" Grid.Column="1" Name="burst1">15</TextBox>
+			<TextBox Grid.Row="2" Grid.Column="1" Name="burst2">25</TextBox>
+			<TextBox Grid.Row="3" Grid.Column="1" Name="burst3">30</TextBox>
+			<TextBox Grid.Row="4" Grid.Column="1" Name="burst4">15</TextBox>
+			<TextBox Grid.Row="5" Grid.Column="1" Name="burst5">15</TextBox>
+			<TextBox Grid.Row="6" Grid.Column="1" Name="burst6">10</TextBox>
 
+			<TextBox Grid.Row="1" Grid.Column="2" Name="priority1">40</TextBox>
+			<TextBox Grid.Row="2" Grid.Column="2" Name="priority2">20</TextBox>
+			<TextBox Grid.Row="3" Grid.Column="2" Name="priority3">30</TextBox>
+			<TextBox Grid.Row="4" Grid.Column="2" Name="priority4">35</TextBox>
+			<TextBox Grid.Row="5" Grid.Column="2" Name="priority5">5</TextBox>
+			<TextBox Grid.Row="6" Grid.Column="2" Name="priority6">10</TextBox>
+
+			<TextBox Grid.Row="1" Grid.Column="3" Name="arrival1">0</TextBox>
+			<TextBox Grid.Row="2" Grid.Column="3" Name="arrival2">25</TextBox>
+			<TextBox Grid.Row="3" Grid.Column="3" Name="arrival3">30</TextBox>
+			<TextBox Grid.Row="4" Grid.Column="3" Name="arrival4">50</TextBox>
+			<TextBox Grid.Row="5" Grid.Column="3" Name="arrival5">100</TextBox>
+			<TextBox Grid.Row="6" Grid.Column="3" Name="arrival6">105</TextBox>
+			<Button Grid.Column="3" Margin="15,50,-15,-49" Grid.Row="6" Click="buttonCalc" >Calculate</Button>
 		</Grid>
 		<Grid Name="queuegrid" Margin="10,378,24,41"/>
 
