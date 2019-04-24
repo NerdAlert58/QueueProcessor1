@@ -29,17 +29,17 @@ namespace QueueProcessor1
 
             var processes = new List<Proc>()
             {
-                new Proc() { Name = "P1", Color = Objects.Color.white, Priority = 40, Burst = 15, Arrival = 0},
-                new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = 30, Burst = 25, Arrival = 25},
-                new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = 30, Burst = 20, Arrival = 30},
-                new Proc() { Name = "P4", Color = Objects.Color.green, Priority = 35, Burst = 15, Arrival = 50},
-                new Proc() { Name = "P5", Color = Objects.Color.red, Priority = 5, Burst = 15, Arrival = 100},
-                new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105}
+                new Proc() { Name = "P1", Color = Objects.Color.white, Priority = 40, Burst = 15, Arrival = 0, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = 30, Burst = 25, Arrival = 25, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = 30, Burst = 20, Arrival = 30, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P4", Color = Objects.Color.green, Priority = 35, Burst = 15, Arrival = 50, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P5", Color = Objects.Color.red, Priority = 5, Burst = 15, Arrival = 100, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105, TurnAroundTime = -1, WaitTime = -1}
             };
 
             var handler = new Handler(processes);
 
-            var events = handler.DoWork();
+            var (events, results) = handler.DoWork();
 
             /*   for (int j = 0; j < 15; j++)
                {
@@ -52,6 +52,7 @@ namespace QueueProcessor1
                    queuegrid.Children.Add(MyControl1);
 
                }*/
+            Console.WriteLine("Hold here.");
         }
 
         private void buttonCalc(object sender, RoutedEventArgs e)

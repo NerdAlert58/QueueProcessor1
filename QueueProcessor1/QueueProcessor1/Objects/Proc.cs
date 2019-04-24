@@ -17,6 +17,8 @@ namespace QueueProcessor1.Objects
         public bool Finished { get; set; }
         public int FinishedAtIndex { get; set; }
         public int LastStartProcessing { get; set; }
+        public int TurnAroundTime { get; set; }
+        public int WaitTime { get; set; }
 
 
         public bool Validate()
@@ -40,8 +42,16 @@ namespace QueueProcessor1.Objects
                 Arrival = this.Arrival,
                 Finished = this.Finished,
                 FinishedAtIndex = this.FinishedAtIndex,
-                LastStartProcessing = this.LastStartProcessing
+                LastStartProcessing = this.LastStartProcessing,
+                TurnAroundTime = this.TurnAroundTime,
+                WaitTime = this.WaitTime
             };
+        }
+
+        public void FinalizeValues()
+        {
+            this.TurnAroundTime = this.CalculateTurnAroundTime();
+            this.WaitTime = this.CalculateWaitTime();
         }
 
         private int CalculateTurnAroundTime()
@@ -49,9 +59,9 @@ namespace QueueProcessor1.Objects
             return this.FinishedAtIndex - this.Arrival;
         }
 
-        private int CaluclateWaitTime()
+        private int CalculateWaitTime()
         {
-            return this.LastStartProcessing - this.InitialBurst;
+            return this.LastStartProcessing - this.InitialBurst - this.Arrival;
         }
     }
 
