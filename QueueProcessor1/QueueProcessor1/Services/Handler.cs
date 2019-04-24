@@ -14,6 +14,7 @@ namespace QueueProcessor1.Services
         private Proc _currentProc { get; set; }
         private IDictionary<int, Event> _events { get; set; }
         private int _idleTime { get; set; }
+        private ProcResults _results { get; set; }
 
         // a.Show the scheduling order of the processes using a Gantt chart.
         // b.What is the turnaround time for each process?
@@ -43,7 +44,12 @@ namespace QueueProcessor1.Services
             };
         }
 
-        public IDictionary<int, Event> DoWork()
+        public IDictionary<int, Event> GetEvents()
+        {
+            return _events;
+        }
+
+        public (IDictionary<int, Event>, ProcResults) DoWork()
         {
             var finished = false;
             var index = 0;
@@ -160,7 +166,33 @@ namespace QueueProcessor1.Services
 
                 index++;
             }
-            return _events;
+
+            if (_events == null || _events.Count <= 0)
+            {
+                return (null, null);
+            }
+            var last = _events.Keys.Max();
+
+            var processes = _events[last].Processes;
+            var waitTime = 0;
+            var turnAroundTime = 0;
+
+            for (int i = 0; i < processes.Count; i++)
+            {
+                var process = processes[i];
+                process.FinalizeValues();
+                waitTime += process.WaitTime;
+                turnAroundTime += process.TurnAroundTime;
+            }
+
+            _results = new ProcResults()
+            {
+                AverageTurnAroundTime = (float)turnAroundTime / processes.Count,
+                AverageWaitTime = (float)waitTime / processes.Count,
+                CPUUtilization = (float)(last-_idleTime) / last
+            };
+
+            return (_events, _results);
         }
 
         private IList<Proc> CloneProcs(IList<Proc> procs)

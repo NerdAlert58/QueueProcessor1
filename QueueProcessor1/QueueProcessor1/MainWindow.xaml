@@ -30,12 +30,12 @@
 			<Label Grid.Column="2">Priority</Label>
 			<Label Grid.Column="3">Arrival</Label>
 
-			<TextBox Grid.Row="1">P0</TextBox>
-			<TextBox Grid.Row="2">P1</TextBox>
-			<TextBox Grid.Row="3">P2</TextBox>
-			<TextBox Grid.Row="4">P3</TextBox>
-			<TextBox Grid.Row="5">P4</TextBox>
-			<TextBox Grid.Row="6">P4</TextBox>
+			<TextBox Grid.Row="1">P1</TextBox>
+			<TextBox Grid.Row="2">P2</TextBox>
+			<TextBox Grid.Row="3">P3</TextBox>
+			<TextBox Grid.Row="4">P4</TextBox>
+			<TextBox Grid.Row="5">P5</TextBox>
+			<TextBox Grid.Row="6">P6</TextBox>
 
 			<TextBox Grid.Row="1" Grid.Column="1" Name="burst1">15</TextBox>
 			<TextBox Grid.Row="2" Grid.Column="1" Name="burst2">25</TextBox>
