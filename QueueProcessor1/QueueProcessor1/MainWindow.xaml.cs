@@ -23,23 +23,22 @@ namespace QueueProcessor1
     /// </summary>
     public partial class MainWindow : Window
     {
+        int value = 1;
+        IDictionary<int, Event> globalEvents;
         public MainWindow()
         {
             InitializeComponent();
 
-            var processes = new List<Proc>()
-            {
-                new Proc() { Name = "P1", Color = Objects.Color.white, Priority = 40, Burst = 15, Arrival = 0},
-                new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = 30, Burst = 25, Arrival = 25},
-                new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = 30, Burst = 20, Arrival = 30},
-                new Proc() { Name = "P4", Color = Objects.Color.green, Priority = 35, Burst = 15, Arrival = 50},
-                new Proc() { Name = "P5", Color = Objects.Color.red, Priority = 5, Burst = 15, Arrival = 100},
-                new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105}
-            };
+            /*       var processes = new List<Proc>()
+                   {
+                       new Proc() { Name = "P1", Color = Objects.Color.white, Priority = 40, Burst = 15, Arrival = 0},
+                       new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = 30, Burst = 25, Arrival = 25},
+                       new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = 30, Burst = 20, Arrival = 30},
+                       new Proc() { Name = "P4", Color = Objects.Color.green, Priority = 35, Burst = 15, Arrival = 50},
+                       new Proc() { Name = "P5", Color = Objects.Color.red, Priority = 5, Burst = 15, Arrival = 100},
+                       new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105}
+                   };*/
 
-            var handler = new Handler(processes);
-
-            var events = handler.DoWork();
 
             /*   for (int j = 0; j < 15; j++)
                {
@@ -55,42 +54,48 @@ namespace QueueProcessor1
         }
 
         private void buttonCalc(object sender, RoutedEventArgs e)
-        {
+        { 
+            
             Proc p0 = new Proc();
             p0.Burst = Convert.ToInt32(burst1.Text);
             p0.Priority = Convert.ToInt32(priority1.Text);
             p0.Arrival = Convert.ToInt32(arrival1.Text);
             p0.Name = "P0";
+            p0.Color = Objects.Color.blue;
 
             Proc p1 = new Proc();
             p1.Burst = Convert.ToInt32(burst2.Text);
             p1.Priority = Convert.ToInt32(priority2.Text);
             p1.Arrival = Convert.ToInt32(arrival2.Text);
             p1.Name = "P1";
+            p1.Color = Objects.Color.white;
 
             Proc p2 = new Proc();
             p2.Burst = Convert.ToInt32(burst3.Text);
             p2.Priority = Convert.ToInt32(priority3.Text);
             p2.Arrival = Convert.ToInt32(arrival3.Text);
+            p2.Color = Objects.Color.orange;
             p2.Name = "P2";
-
             Proc p3 = new Proc();
             p3.Burst = Convert.ToInt32(burst4.Text);
             p3.Priority = Convert.ToInt32(priority4.Text);
             p3.Arrival = Convert.ToInt32(arrival4.Text);
             p3.Name = "P3";
+            p3.Color = Objects.Color.red;
 
             Proc p4 = new Proc();
             p4.Burst = Convert.ToInt32(burst5.Text);
             p4.Priority = Convert.ToInt32(priority5.Text);
             p4.Arrival = Convert.ToInt32(arrival5.Text);
             p4.Name = "P4";
+            p4.Color = Objects.Color.purple;
 
             Proc p5 = new Proc();
             p5.Burst = Convert.ToInt32(burst6.Text);
             p5.Priority = Convert.ToInt32(priority6.Text);
             p5.Arrival = Convert.ToInt32(arrival6.Text);
             p5.Name = "P5";
+            p5.Color = Objects.Color.gray;
 
             List<Proc> procList = new List<Proc>();
             procList.Add(p0);
@@ -100,7 +105,55 @@ namespace QueueProcessor1
             procList.Add(p4);
             procList.Add(p5);
 
-            //scott, call your function here
+            /*
+               var processes = new List<Proc>()
+               {
+                   new Proc() { Name = "P1", Color = Objects.Color.white, Priority = 40, Burst = 15, Arrival = 0},
+                   new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = 30, Burst = 25, Arrival = 25},
+                   new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = 30, Burst = 20, Arrival = 30},
+                   new Proc() { Name = "P4", Color = Objects.Color.green, Priority = 35, Burst = 15, Arrival = 50},
+                   new Proc() { Name = "P5", Color = Objects.Color.red, Priority = 5, Burst = 15, Arrival = 100},
+                   new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105}
+               };*/
+            var handler = new Handler(procList);
+
+            var events = handler.DoWork();
+            buttoncalc.Visibility = Visibility.Hidden;
+            globalEvents = events;
+            Drawing(globalEvents);
+        }
+        private void Drawing(IDictionary<int, Event> events)
+        {
+            int count = 0;
+            if(events[value].Finished != null) {
+                foreach (var x in events[value].Finished)
+                {
+                    Button MyControl1 = new Button();
+                    MyControl1.Content = x.Name.ToString();
+                    //   MyControl1.Name = "Button" + x.Name.ToString();
+                    MyControl1.SetValue(Grid.ColumnProperty, count);
+                    MyControl1.Height = 35;
+                    //   MyControl1.Background = x.Color;
+                    queuegrid.ColumnDefinitions.Add(new ColumnDefinition());
+                    queuegrid.Children.Add(MyControl1);
+                    count++;
+                }
+            } 
+        }
+        private void IndexAdjust1(object sender, RoutedEventArgs e)
+        {
+            value += 1;
+            Drawing(globalEvents);
+        }
+        private void IndexAdjust5(object sender, RoutedEventArgs e)
+        {
+            value += 5;
+            Drawing(globalEvents);
+        }
+        private void IndexAdjust10(object sender, RoutedEventArgs e)
+        {
+            value += 10;
+            Drawing(globalEvents);
         }
     }
 }

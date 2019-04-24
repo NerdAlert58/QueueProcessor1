@@ -57,9 +57,13 @@
 			<TextBox Grid.Row="4" Grid.Column="3" Name="arrival4">50</TextBox>
 			<TextBox Grid.Row="5" Grid.Column="3" Name="arrival5">100</TextBox>
 			<TextBox Grid.Row="6" Grid.Column="3" Name="arrival6">105</TextBox>
-			<Button Grid.Column="3" Margin="15,50,-15,-49" Grid.Row="6" Click="buttonCalc" >Calculate</Button>
+			<Button Grid.Column="3" Name="buttoncalc" Margin="15,50,-15,-49" Grid.Row="6" Click="buttonCalc" >Calculate</Button>
 		</Grid>
-		<Grid Name="queuegrid" Margin="10,378,24,41"/>
+		<Grid Name="queuegrid" Margin="10,378,24,41">
+			<Button Content="1" HorizontalAlignment="Left"  Margin="600,220,0,0" Click="IndexAdjust1" VerticalAlignment="Top" Width="76"/>
+			<Button Content="5" HorizontalAlignment="Left" Margin="681,220,0,0" Click="IndexAdjust5" VerticalAlignment="Top" Width="76"/>
+			<Button Content="10" HorizontalAlignment="Left" Margin="762,220,0,0" Click="IndexAdjust10" VerticalAlignment="Top" Width="76"/>
+		</Grid>
 
 	</Grid>
 </Window>
