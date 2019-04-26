@@ -14,5 +14,6 @@ namespace QueueProcessor1.Objects
         public IList<Proc> Finished { get; set; } // Once a Proc finishes its Burst, we will add it here.
         public Proc CurrentProc { get; set; }
         public int TimeQuantum { get; set; }
+        public string Gantt { get; set; }
     }
 }
