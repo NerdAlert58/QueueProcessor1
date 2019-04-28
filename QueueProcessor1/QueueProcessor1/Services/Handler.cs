@@ -16,6 +16,7 @@ namespace QueueProcessor1.Services
         private IDictionary<int, Event> _events { get; set; }
         private int _idleTime { get; set; }
         private ProcResults _results { get; set; }
+        private Proc _lastProc { get; set; }
 
         // a.Show the scheduling order of the processes using a Gantt chart.
         // b.What is the turnaround time for each process?
@@ -91,14 +92,21 @@ namespace QueueProcessor1.Services
                                 {
                                     waitQueue.Add(_currentProc);
                                 }
-                                _currentProc = arr;
+                                if (!arr.Finished)
+                                {
+                                    waitQueue.Add(arr);
+                                    waitQueue.Sort(delegate (Proc x, Proc y) { return y.Priority.CompareTo(x.Priority); });
+                                }
+                                _lastProc = _currentProc.Clone();
+                                _currentProc = null;
                             }
                         }
                         else
                         {
                             if (!arr.Finished)
                             {
-                                _currentProc = arr;
+                                waitQueue.Add(arr);
+                                waitQueue.Sort(delegate (Proc x, Proc y) { return y.Priority.CompareTo(x.Priority); });
                             }
                         }
                     }
@@ -108,12 +116,14 @@ namespace QueueProcessor1.Services
                 {
                     _currentProc = waitQueue[0];
                     waitQueue.RemoveAt(0);
+                    timeQuantum = _timeQuantum;
                 }
 
                 if (_currentProc == null || string.Equals(_currentProc.Name, "IDLE"))
                 {
                     // IDLE PROCESS TIME
                     _currentProc = GetIdleProc();
+                    _lastProc = _currentProc.Clone();
                     _idleTime += 1;
                     timeQuantum -= 1;
                     if (timeQuantum == _timeQuantum - 1)
@@ -129,7 +139,13 @@ namespace QueueProcessor1.Services
 
                     if (timeQuantum == _timeQuantum - 1)
                     {
-                        _currentProc.LastStartProcessing = index;
+                        if (_lastProc != null)
+                        {
+                            if (!string.Equals(_currentProc.Name, _lastProc.Name))
+                            {
+                                _currentProc.LastStartProcessing = index;
+                            }
+                        }                        
                         AddToGantt(sb, index, _currentProc.Name);
                     }
 
@@ -179,12 +195,14 @@ namespace QueueProcessor1.Services
                             waitQueue.Sort(delegate (Proc x, Proc y) { return y.Priority.CompareTo(x.Priority); });
                         }
                     }
+                    _lastProc = _currentProc.Clone();
                     _currentProc = null;
                     timeQuantum = _timeQuantum;
                 }
 
                 if (_currentProc != null && _currentProc.Finished)
                 {
+                    _lastProc = _currentProc.Clone();
                     _currentProc = null;
                     timeQuantum = _timeQuantum;
                 }
@@ -193,7 +211,7 @@ namespace QueueProcessor1.Services
                 if (_processes.All(x => x.Finished == true))
                 {
                     finished = true;
-                    AddToGantt(sb,index + 1,"Complete|");
+                    AddToGantt(sb, index + 1, "Complete|");
                     var lastIndex = _events.Keys.Max();
                     var lastEvent = _events[lastIndex];
                     lastEvent.Gantt = sb.ToString();
@@ -248,16 +266,7 @@ namespace QueueProcessor1.Services
             for (int i = 0; i < procs.Count; i++)
             {
                 var proc = procs[i];
-                clones.Add(new Proc()
-                {
-                    Name = proc.Name,
-                    Color = proc.Color,
-                    Burst = proc.Burst,
-                    Arrival = proc.Arrival,
-                    Finished = proc.Finished,
-                    FinishedAtIndex = proc.FinishedAtIndex,
-                    LastStartProcessing = proc.LastStartProcessing
-                });
+                clones.Add(proc.Clone());
             }
             return clones;
         }
