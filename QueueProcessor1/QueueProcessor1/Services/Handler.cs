@@ -10,6 +10,7 @@ namespace QueueProcessor1.Services
     public class Handler
     {
         private IList<Proc> _processes { get; set; }
+        private IList<Proc> _finished { get; set; }
         private int _timeQuantum { get; set; }
         private Proc _currentProc { get; set; }
         private IDictionary<int, Event> _events { get; set; }
@@ -25,6 +26,7 @@ namespace QueueProcessor1.Services
         public Handler(IList<Proc> processes)
         {
             _processes = processes ?? throw new ArgumentNullException(nameof(processes));
+            _finished = new List<Proc>();
             _timeQuantum = 10;
             _currentProc = null;
             _events = new Dictionary<int, Event>();
@@ -138,11 +140,27 @@ namespace QueueProcessor1.Services
                     }
                 }
 
+                if (_processes.Any(x => x.Finished == true))
+                {
+                    for (int i = 0; i < _processes.Count; i++)
+                    {
+                        var proc = _processes[i];
+                        if (proc.Finished)
+                        {
+                            if (_finished.Contains(proc))
+                            {
+                                _finished.Add(proc);
+                            }
+                        }
+                    }
+                }
+
                 // create Event object and add to events
                 _events[index] = new Event()
                 {
                     Index = index,
                     Processes = CloneProcs(_processes),
+                    Finished = CloneProcs(_finished),
                     Waiting = CloneProcs(waitQueue),
                     CurrentProc = _currentProc.Clone(),
                     TimeQuantum = timeQuantum,
@@ -175,7 +193,7 @@ namespace QueueProcessor1.Services
                 if (_processes.All(x => x.Finished == true))
                 {
                     finished = true;
-                    AddToGantt(sb,index + 1,"Complete|");
+                    AddToGantt(sb, index + 1, "Complete|");
                     var lastIndex = _events.Keys.Max();
                     var lastEvent = _events[lastIndex];
                     lastEvent.Gantt = sb.ToString();
@@ -207,7 +225,7 @@ namespace QueueProcessor1.Services
             {
                 AverageTurnAroundTime = (float)turnAroundTime / processes.Count,
                 AverageWaitTime = (float)waitTime / processes.Count,
-                CPUUtilization = (float)(last-_idleTime) / last
+                CPUUtilization = (float)(last - _idleTime) / last
             };
 
             return (_events, _results);
