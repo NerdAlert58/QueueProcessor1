@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QueueProcessor1.Objects;
+using QueueProcessor1.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,20 +27,35 @@ namespace QueueProcessor1
         {
             InitializeComponent();
 
-         /*   for (int j = 0; j < 15; j++)
+            var processes = new List<Proc>()
             {
-                Button MyControl1 = new Button();
-                MyControl1.Content =j.ToString();
-                MyControl1.Name = "Button" + j.ToString();
-                MyControl1.SetValue(Grid.ColumnProperty, j);
-                MyControl1.Height = 35;
-                queuegrid.ColumnDefinitions.Add(new ColumnDefinition());
-                queuegrid.Children.Add(MyControl1);
+                new Proc() { Name = "P1", Color = Objects.Color.white, Priority = 40, Burst = 15, Arrival = 0, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = 30, Burst = 25, Arrival = 25, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = 30, Burst = 20, Arrival = 30, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P4", Color = Objects.Color.green, Priority = 35, Burst = 15, Arrival = 50, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P5", Color = Objects.Color.red, Priority = 5, Burst = 15, Arrival = 100, TurnAroundTime = -1, WaitTime = -1},
+                new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105, TurnAroundTime = -1, WaitTime = -1}
+            };
 
-            }*/
+            var handler = new Handler(processes);
+
+            var (events, results) = handler.DoWork();
+
+            /*   for (int j = 0; j < 15; j++)
+               {
+                   Button MyControl1 = new Button();
+                   MyControl1.Content =j.ToString();
+                   MyControl1.Name = "Button" + j.ToString();
+                   MyControl1.SetValue(Grid.ColumnProperty, j);
+                   MyControl1.Height = 35;
+                   queuegrid.ColumnDefinitions.Add(new ColumnDefinition());
+                   queuegrid.Children.Add(MyControl1);
+
+               }*/
+            Console.WriteLine("Hold here.");
         }
 
-        private void buttonCalc (object sender, RoutedEventArgs e)
+        private void buttonCalc(object sender, RoutedEventArgs e)
         {
             Proc p0 = new Proc();
             p0.Burst = Convert.ToInt32(burst1.Text);
