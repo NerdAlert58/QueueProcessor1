@@ -55,6 +55,7 @@ namespace QueueProcessor1.Services
             var index = 0;
             var timeQuantum = _timeQuantum;
             var waitQueue = new List<Proc>();
+            var sb = new StringBuilder();
             while (!finished)
             {
                 // Check for new arrivals
@@ -84,7 +85,10 @@ namespace QueueProcessor1.Services
                             }
                             else
                             {
-                                waitQueue.Add(_currentProc);
+                                if (!string.Equals(_currentProc.Name, "IDLE"))
+                                {
+                                    waitQueue.Add(_currentProc);
+                                }
                                 _currentProc = arr;
                             }
                         }
@@ -109,6 +113,11 @@ namespace QueueProcessor1.Services
                     // IDLE PROCESS TIME
                     _currentProc = GetIdleProc();
                     _idleTime += 1;
+                    timeQuantum -= 1;
+                    if (timeQuantum == _timeQuantum - 1)
+                    {
+                        AddToGantt(sb, index, _currentProc.Name);
+                    }
                 }
                 else
                 {
@@ -119,6 +128,7 @@ namespace QueueProcessor1.Services
                     if (timeQuantum == _timeQuantum - 1)
                     {
                         _currentProc.LastStartProcessing = index;
+                        AddToGantt(sb, index, _currentProc.Name);
                     }
 
                     if (_currentProc.Burst == 0)
@@ -135,32 +145,40 @@ namespace QueueProcessor1.Services
                     Processes = CloneProcs(_processes),
                     Waiting = CloneProcs(waitQueue),
                     CurrentProc = _currentProc.Clone(),
-                    TimeQuantum = timeQuantum
+                    TimeQuantum = timeQuantum,
+                    Gantt = sb.ToString()
                 };
 
-                if (!string.Equals(_currentProc.Name, "IDLE"))
+
+                // If proc still has more units && timeQuantum is not used up, set currentProc to this guy
+                if (timeQuantum == 0)
                 {
-                    // If proc still has more units && timeQuantum is not used up, set currentProc to this guy
-                    if (timeQuantum == 0)
+                    if (!string.Equals(_currentProc.Name, "IDLE"))
                     {
                         if (!_currentProc.Finished)
                         {
                             waitQueue.Add(_currentProc);
                             waitQueue.Sort(delegate (Proc x, Proc y) { return y.Priority.CompareTo(x.Priority); });
                         }
-                        _currentProc = null;
-                        timeQuantum = _timeQuantum;
                     }
-
-                    if (_currentProc != null && _currentProc.Finished)
-                    {
-                        _currentProc = null;
-                    }
+                    _currentProc = null;
+                    timeQuantum = _timeQuantum;
                 }
+
+                if (_currentProc != null && _currentProc.Finished)
+                {
+                    _currentProc = null;
+                    timeQuantum = _timeQuantum;
+                }
+
 
                 if (_processes.All(x => x.Finished == true))
                 {
                     finished = true;
+                    AddToGantt(sb,index + 1,"Complete|");
+                    var lastIndex = _events.Keys.Max();
+                    var lastEvent = _events[lastIndex];
+                    lastEvent.Gantt = sb.ToString();
                 }
 
 
@@ -193,6 +211,11 @@ namespace QueueProcessor1.Services
             };
 
             return (_events, _results);
+        }
+
+        private void AddToGantt(StringBuilder sb, int index, string name)
+        {
+            sb.Append($"|{index} - {name} ");
         }
 
         private IList<Proc> CloneProcs(IList<Proc> procs)
