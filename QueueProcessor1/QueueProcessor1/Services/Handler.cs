@@ -10,6 +10,7 @@ namespace QueueProcessor1.Services
     public class Handler
     {
         private IList<Proc> _processes { get; set; }
+        private IList<Proc> _finished { get; set; }
         private int _timeQuantum { get; set; }
         private Proc _currentProc { get; set; }
         private IDictionary<int, Event> _events { get; set; }
@@ -25,6 +26,7 @@ namespace QueueProcessor1.Services
         public Handler(IList<Proc> processes)
         {
             _processes = processes ?? throw new ArgumentNullException(nameof(processes));
+            _finished = new List<Proc>();
             _timeQuantum = 10;
             _currentProc = null;
             _events = new Dictionary<int, Event>();
@@ -138,11 +140,27 @@ namespace QueueProcessor1.Services
                     }
                 }
 
+                if (_processes.Any(x => x.Finished == true))
+                {
+                    for (int i = 0; i < _processes.Count; i++)
+                    {
+                        var proc = _processes[i];
+                        if (proc.Finished)
+                        {
+                            if (!_finished.Contains(proc))
+                            {
+                                _finished.Add(proc);
+                            }
+                        }
+                    }
+                }
+
                 // create Event object and add to events
                 _events[index] = new Event()
                 {
                     Index = index,
                     Processes = CloneProcs(_processes),
+                    Finished = CloneProcs(_finished),
                     Waiting = CloneProcs(waitQueue),
                     CurrentProc = _currentProc.Clone(),
                     TimeQuantum = timeQuantum,
@@ -194,6 +212,8 @@ namespace QueueProcessor1.Services
             var processes = _events[last].Processes;
             var waitTime = 0;
             var turnAroundTime = 0;
+            var sbTurn = new StringBuilder();
+            var sbWait = new StringBuilder();
 
             for (int i = 0; i < processes.Count; i++)
             {
@@ -201,13 +221,17 @@ namespace QueueProcessor1.Services
                 process.FinalizeValues();
                 waitTime += process.WaitTime;
                 turnAroundTime += process.TurnAroundTime;
+                sbTurn.AppendLine($"{process.Name}: {process.TurnAroundTime} units");
+                sbWait.AppendLine($"{process.Name}: {process.WaitTime} units");
             }
 
             _results = new ProcResults()
             {
                 AverageTurnAroundTime = (float)turnAroundTime / processes.Count,
                 AverageWaitTime = (float)waitTime / processes.Count,
-                CPUUtilization = (float)(last-_idleTime) / last
+                CPUUtilization = (float)(last-_idleTime) / last,
+                WaitTimes = sbWait.ToString(),
+                TurnAroundTimes = sbTurn.ToString()
             };
 
             return (_events, _results);
