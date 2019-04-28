@@ -27,12 +27,11 @@ namespace QueueProcessor1
         IDictionary<int, Event> globalEvents;
         finished newWindow;
 
-
         ProcResults globalResults;
         public MainWindow()
         {
+            
             InitializeComponent();
-
         }
 
         private void buttonCalc(object sender, RoutedEventArgs e)
@@ -46,12 +45,12 @@ namespace QueueProcessor1
 
             var procList = new List<Proc>()
                {
-                   new Proc() { Name = "P1", Color = Objects.Color.white, Priority = Int32.Parse(priority1.Text), Burst = Int32.Parse(burst1.Text), Arrival = Int32.Parse(arrival1.Text)},
-                   new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = Int32.Parse(priority2.Text), Burst = Int32.Parse(burst2.Text), Arrival = Int32.Parse(arrival2.Text)},
-                   new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = Int32.Parse(priority3.Text), Burst = Int32.Parse(burst3.Text), Arrival = Int32.Parse(arrival3.Text)},
-                   new Proc() { Name = "P4", Color = Objects.Color.green, Priority = Int32.Parse(priority4.Text), Burst = Int32.Parse(burst4.Text), Arrival = Int32.Parse(arrival4.Text)},
-                   new Proc() { Name = "P5", Color = Objects.Color.red, Priority = Int32.Parse(priority5.Text), Burst = Int32.Parse(burst5.Text), Arrival = Int32.Parse(arrival5.Text)},
-                   new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = Int32.Parse(priority6.Text), Burst = Int32.Parse(burst6.Text), Arrival = Int32.Parse(arrival6.Text)}
+                   new Proc() { Name = "P1", Color = Objects.Color.white, Priority = Int32.Parse(priority1.Text), Burst = Int32.Parse(burst1.Text), InitialBurst = Int32.Parse(burst1.Text), Arrival = Int32.Parse(arrival1.Text)},
+                   new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = Int32.Parse(priority2.Text), Burst = Int32.Parse(burst2.Text), InitialBurst = Int32.Parse(burst2.Text), Arrival = Int32.Parse(arrival2.Text)},
+                   new Proc() { Name = "P3", Color = Objects.Color.purple, Priority = Int32.Parse(priority3.Text), Burst = Int32.Parse(burst3.Text), InitialBurst = Int32.Parse(burst3.Text), Arrival = Int32.Parse(arrival3.Text)},
+                   new Proc() { Name = "P4", Color = Objects.Color.green, Priority = Int32.Parse(priority4.Text), Burst = Int32.Parse(burst4.Text), InitialBurst = Int32.Parse(burst4.Text), Arrival = Int32.Parse(arrival4.Text)},
+                   new Proc() { Name = "P5", Color = Objects.Color.red, Priority = Int32.Parse(priority5.Text), Burst = Int32.Parse(burst5.Text), InitialBurst = Int32.Parse(burst5.Text), Arrival = Int32.Parse(arrival5.Text)},
+                   new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = Int32.Parse(priority6.Text), Burst = Int32.Parse(burst6.Text), InitialBurst = Int32.Parse(burst6.Text), Arrival = Int32.Parse(arrival6.Text)}
                };
             var handler = new Handler(procList);
 
@@ -69,7 +68,7 @@ namespace QueueProcessor1
             {
                 value = 0;
             }
-            else if (value >= events.Keys.Count)
+            else if (value >= events.Keys.Count-1)
             {
                 value = events.Values.Count-1;
                 ganttChart.Text = events[value].Gantt;
@@ -81,7 +80,6 @@ namespace QueueProcessor1
                 button4.Visibility = Visibility.Hidden;
                 button5.Visibility = Visibility.Hidden;
                 button6.Visibility = Visibility.Hidden;
-
             }
 
                 burst1.Text = events[value].Processes[0].Burst.ToString();
@@ -117,7 +115,6 @@ namespace QueueProcessor1
                 }
                 waitingProcess.Content = tmpstring;
             ganttChart.Text = events[value].Gantt;
-
         }
         private void IndexAdjust1(object sender, RoutedEventArgs e)
         {
