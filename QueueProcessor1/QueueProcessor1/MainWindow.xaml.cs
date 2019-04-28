@@ -23,7 +23,7 @@ namespace QueueProcessor1
     /// </summary>
     public partial class MainWindow : Window
     {
-        int value = 1;
+        int value = 0;
         IDictionary<int, Event> globalEvents;
         public MainWindow()
         {
@@ -49,10 +49,6 @@ namespace QueueProcessor1
                 new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105, TurnAroundTime = -1, WaitTime = -1}
             };
 
-            var handler = new Handler(processes);
-
-            var (events, results) = handler.DoWork();
-
             /*   for (int j = 0; j < 15; j++)
                {
                    Button MyControl1 = new Button();
@@ -68,8 +64,7 @@ namespace QueueProcessor1
         }
 
         private void buttonCalc(object sender, RoutedEventArgs e)
-        { 
-            
+        { /*            
             Proc p0 = new Proc();
             p0.Burst = Convert.ToInt32(burst1.Text);
             p0.Priority = Convert.ToInt32(priority1.Text);
@@ -119,8 +114,8 @@ namespace QueueProcessor1
             procList.Add(p4);
             procList.Add(p5);
 
-            /*
-               var processes = new List<Proc>()
+            */
+               var procList = new List<Proc>()
                {
                    new Proc() { Name = "P1", Color = Objects.Color.white, Priority = 40, Burst = 15, Arrival = 0},
                    new Proc() { Name = "P2", Color = Objects.Color.blue, Priority = 30, Burst = 25, Arrival = 25},
@@ -128,31 +123,61 @@ namespace QueueProcessor1
                    new Proc() { Name = "P4", Color = Objects.Color.green, Priority = 35, Burst = 15, Arrival = 50},
                    new Proc() { Name = "P5", Color = Objects.Color.red, Priority = 5, Burst = 15, Arrival = 100},
                    new Proc() { Name = "P6", Color = Objects.Color.orange, Priority = 10, Burst = 10, Arrival = 105}
-               };*/
+               };
             var handler = new Handler(procList);
 
-            var events = handler.DoWork();
+            var (events, results) = handler.DoWork();
             buttoncalc.Visibility = Visibility.Hidden;
             globalEvents = events;
             Drawing(globalEvents);
         }
         private void Drawing(IDictionary<int, Event> events)
         {
-            int count = 0;
-            if(events[value].Finished != null) {
-                foreach (var x in events[value].Finished)
+
+            if (value < 0)
+            {
+                value = 0;
+            }
+            else if (value >= events.Keys.Count)
+            {
+                value = events.Values.Count-1;
+            }
+            else
+            {
+                burst1.Text = events[value].Processes[0].Burst.ToString();
+                burst2.Text = events[value].Processes[1].Burst.ToString();
+                burst3.Text = events[value].Processes[2].Burst.ToString();
+                burst4.Text = events[value].Processes[3].Burst.ToString();
+                burst5.Text = events[value].Processes[4].Burst.ToString();
+                burst6.Text = events[value].Processes[5].Burst.ToString();
+
+                qRemaining.Content = events[value].TimeQuantum.ToString();
+                currentProcess.Content = events[value].CurrentProc.Name.ToString();
+
+                timeBox.Content = value.ToString();
+                string tmpstring = "";
+
+                if (events[value].Finished != null)
                 {
-                    Button MyControl1 = new Button();
-                    MyControl1.Content = x.Name.ToString();
-                    //   MyControl1.Name = "Button" + x.Name.ToString();
-                    MyControl1.SetValue(Grid.ColumnProperty, count);
-                    MyControl1.Height = 35;
-                    //   MyControl1.Background = x.Color;
-                    queuegrid.ColumnDefinitions.Add(new ColumnDefinition());
-                    queuegrid.Children.Add(MyControl1);
-                    count++;
+                    foreach (var x in events[value].Finished)
+                    {
+                        tmpstring += x.Name.ToString();
+                        tmpstring += ", ";
+                    }
                 }
-            } 
+                finishedProcess.Content = tmpstring;
+                tmpstring = "";
+                if (events[value].Waiting != null)
+                {
+                    foreach (var x in events[value].Waiting)
+                    {
+                        tmpstring += x.Name.ToString();
+                        tmpstring += ", ";
+                    }
+                }
+                waitingProcess.Content = tmpstring;
+
+            }
         }
         private void IndexAdjust1(object sender, RoutedEventArgs e)
         {
@@ -167,6 +192,21 @@ namespace QueueProcessor1
         private void IndexAdjust10(object sender, RoutedEventArgs e)
         {
             value += 10;
+            Drawing(globalEvents);
+        }
+        private void IndexAdjustm1(object sender, RoutedEventArgs e)
+        {
+            value += -1;
+            Drawing(globalEvents);
+        }
+        private void IndexAdjustm5(object sender, RoutedEventArgs e)
+        {
+            value += -5;
+            Drawing(globalEvents);
+        }
+        private void IndexAdjustm10(object sender, RoutedEventArgs e)
+        {
+            value += -10;
             Drawing(globalEvents);
         }
     }

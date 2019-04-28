@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:QueueProcessor1"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1050">
-    <Grid>
+	<Grid>
 
 		<Grid Name="dataTable" Margin="314,42,316,458">
 			<Grid.ColumnDefinitions>
@@ -30,12 +30,12 @@
 			<Label Grid.Column="2">Priority</Label>
 			<Label Grid.Column="3">Arrival</Label>
 
-			<TextBox Grid.Row="1">P1</TextBox>
-			<TextBox Grid.Row="2">P2</TextBox>
-			<TextBox Grid.Row="3">P3</TextBox>
-			<TextBox Grid.Row="4">P4</TextBox>
-			<TextBox Grid.Row="5">P5</TextBox>
-			<TextBox Grid.Row="6">P6</TextBox>
+			<TextBox Grid.Row="1">P0</TextBox>
+			<TextBox Grid.Row="2">P1</TextBox>
+			<TextBox Grid.Row="3">P2</TextBox>
+			<TextBox Grid.Row="4">P3</TextBox>
+			<TextBox Grid.Row="5">P4</TextBox>
+			<TextBox Grid.Row="6">P5</TextBox>
 
 			<TextBox Grid.Row="1" Grid.Column="1" Name="burst1">15</TextBox>
 			<TextBox Grid.Row="2" Grid.Column="1" Name="burst2">25</TextBox>
@@ -57,13 +57,25 @@
 			<TextBox Grid.Row="4" Grid.Column="3" Name="arrival4">50</TextBox>
 			<TextBox Grid.Row="5" Grid.Column="3" Name="arrival5">100</TextBox>
 			<TextBox Grid.Row="6" Grid.Column="3" Name="arrival6">105</TextBox>
-			<Button Grid.Column="3" Name="buttoncalc" Margin="15,50,-15,-49" Grid.Row="6" Click="buttonCalc" >Calculate</Button>
+			<Button Grid.Column="1" Name="buttoncalc" Margin="50,35,0,-34" Grid.Row="6" Click="buttonCalc" HorizontalAlignment="Left" Width="103" Grid.ColumnSpan="2" >Calculate</Button>
 		</Grid>
-		<Grid Name="queuegrid" Margin="10,378,24,41">
-			<Button Content="1" HorizontalAlignment="Left"  Margin="600,220,0,0" Click="IndexAdjust1" VerticalAlignment="Top" Width="76"/>
-			<Button Content="5" HorizontalAlignment="Left" Margin="681,220,0,0" Click="IndexAdjust5" VerticalAlignment="Top" Width="76"/>
-			<Button Content="10" HorizontalAlignment="Left" Margin="762,220,0,0" Click="IndexAdjust10" VerticalAlignment="Top" Width="76"/>
-		</Grid>
+
+		<Button Content="1" HorizontalAlignment="Left"  Margin="460,333,0,0" Click="IndexAdjust1" VerticalAlignment="Top" Width="76"/>
+		<Button Content="5" HorizontalAlignment="Left" Margin="541,333,0,0" Click="IndexAdjust5" VerticalAlignment="Top" Width="76"/>
+		<Button Content="10" HorizontalAlignment="Left" Margin="622,333,0,0" Click="IndexAdjust10" VerticalAlignment="Top" Width="76"/>
+		<Button Content="-1" HorizontalAlignment="Left"  Margin="379,333,0,0" Click="IndexAdjustm1" VerticalAlignment="Top" Width="76"/>
+		<Button Content="-5" HorizontalAlignment="Left"  Margin="298,333,0,0" Click="IndexAdjustm5" VerticalAlignment="Top" Width="76"/>
+		<Button Content="-10" HorizontalAlignment="Left"  Margin="217,333,0,0" Click="IndexAdjustm10" VerticalAlignment="Top" Width="76"/>
+		<Label Content="Current Time:" HorizontalAlignment="Left" Margin="350,285,0,0" VerticalAlignment="Top" FontSize="18"/>
+		<Label x:Name="timeBox" Content="" HorizontalAlignment="Left" Margin="507,285,0,0" VerticalAlignment="Top" Width="130" FontSize="18"/>
+		<Label Content="Quantum Left:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="494,368,0,0" FontSize="18"/>
+		<Label x:Name="currentProcess" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270,358,0,0" FontSize="18"/>
+		<Label Content="Current Process:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="108,358,0,0" FontSize="18"/>
+		<Label x:Name="qRemaining" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="636,368,0,0" FontSize="18"/>
+		<Label x:Name="waitingProcess" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="270,472,0,0" FontSize="18" RenderTransformOrigin="1.596,-0.515"/>
+		<Label Content="Waiting Processes: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="108,472,0,0" FontSize="18"/>
+		<Label Content="Finished Processes: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="494,472,0,0" FontSize="18"/>
+		<Label x:Name="finishedProcess" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="674,472,0,0" FontSize="18"/>
 
 	</Grid>
 </Window>
