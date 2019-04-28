@@ -147,7 +147,7 @@ namespace QueueProcessor1.Services
                         var proc = _processes[i];
                         if (proc.Finished)
                         {
-                            if (_finished.Contains(proc))
+                            if (!_finished.Contains(proc))
                             {
                                 _finished.Add(proc);
                             }
@@ -212,6 +212,8 @@ namespace QueueProcessor1.Services
             var processes = _events[last].Processes;
             var waitTime = 0;
             var turnAroundTime = 0;
+            var sbTurn = new StringBuilder();
+            var sbWait = new StringBuilder();
 
             for (int i = 0; i < processes.Count; i++)
             {
@@ -219,13 +221,17 @@ namespace QueueProcessor1.Services
                 process.FinalizeValues();
                 waitTime += process.WaitTime;
                 turnAroundTime += process.TurnAroundTime;
+                sbTurn.AppendLine($"{process.Name}: {process.TurnAroundTime} units");
+                sbWait.AppendLine($"{process.Name}: {process.WaitTime} units");
             }
 
             _results = new ProcResults()
             {
                 AverageTurnAroundTime = (float)turnAroundTime / processes.Count,
                 AverageWaitTime = (float)waitTime / processes.Count,
-                CPUUtilization = (float)(last - _idleTime) / last
+                CPUUtilization = (float)(last-_idleTime) / last,
+                WaitTimes = sbWait.ToString(),
+                TurnAroundTimes = sbTurn.ToString()
             };
 
             return (_events, _results);
