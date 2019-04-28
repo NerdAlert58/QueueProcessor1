@@ -30,12 +30,12 @@
 			<Label Grid.Column="2">Priority</Label>
 			<Label Grid.Column="3">Arrival</Label>
 
-			<TextBox Grid.Row="1">P0</TextBox>
-			<TextBox Grid.Row="2">P1</TextBox>
-			<TextBox Grid.Row="3">P2</TextBox>
-			<TextBox Grid.Row="4">P3</TextBox>
-			<TextBox Grid.Row="5">P4</TextBox>
-			<TextBox Grid.Row="6">P5</TextBox>
+			<TextBox Grid.Row="1">P1</TextBox>
+			<TextBox Grid.Row="2">P2</TextBox>
+			<TextBox Grid.Row="3">P3</TextBox>
+			<TextBox Grid.Row="4">P4</TextBox>
+			<TextBox Grid.Row="5">P5</TextBox>
+			<TextBox Grid.Row="6">P6</TextBox>
 
 			<TextBox Grid.Row="1" Grid.Column="1" Name="burst1">15</TextBox>
 			<TextBox Grid.Row="2" Grid.Column="1" Name="burst2">25</TextBox>
@@ -58,6 +58,7 @@
 			<TextBox Grid.Row="5" Grid.Column="3" Name="arrival5">100</TextBox>
 			<TextBox Grid.Row="6" Grid.Column="3" Name="arrival6">105</TextBox>
 			<Button Grid.Column="1" Name="buttoncalc" Margin="50,35,0,-34" Grid.Row="6" Click="buttonCalc" HorizontalAlignment="Left" Width="103" Grid.ColumnSpan="2" >Calculate</Button>
+			<Button Grid.Column="1" Name="buttonReset" Grid.Row="6" HorizontalAlignment="Left" Width="103" Grid.ColumnSpan="2" Margin="50,64,0,-64" Click="buttonReset_Click" >Reset</Button>
 		</Grid>
 
 		<Button Content="1" Name="button1" HorizontalAlignment="Left"  Margin="488,333,0,0" Click="IndexAdjust1" VerticalAlignment="Top" Width="76" Visibility="Hidden"/>

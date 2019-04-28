@@ -25,9 +25,10 @@ namespace QueueProcessor1
     {
         int value = 0;
         IDictionary<int, Event> globalEvents;
+        ProcResults globalResults;
+       
         finished newWindow;
 
-        ProcResults globalResults;
         public MainWindow()
         {
             
@@ -58,6 +59,7 @@ namespace QueueProcessor1
             buttoncalc.Visibility = Visibility.Hidden;
             newWindow = new finished(results.AverageTurnAroundTime, results.AverageWaitTime, results.CPUUtilization, results.WaitTimes, results.TurnAroundTimes);
             globalEvents = events;
+            globalResults = results;
 
             Drawing(globalEvents);
         }
@@ -92,7 +94,7 @@ namespace QueueProcessor1
                 qRemaining.Content = events[value].TimeQuantum.ToString();
                 currentProcess.Content = events[value].CurrentProc.Name.ToString();
 
-                timeBox.Content = value.ToString();
+                timeBox.Content = (value+1).ToString();
                 string tmpstring = "";
 
                 if (events[value].Finished != null)
@@ -116,6 +118,7 @@ namespace QueueProcessor1
                 waitingProcess.Content = tmpstring;
             ganttChart.Text = events[value].Gantt;
         }
+   
         private void IndexAdjust1(object sender, RoutedEventArgs e)
         {
             value += 1;
@@ -147,5 +150,17 @@ namespace QueueProcessor1
             Drawing(globalEvents);
         }
 
+        private void buttonReset_Click(object sender, RoutedEventArgs e)
+        {
+            value = 0;
+            button1.Visibility = Visibility.Visible;
+            button2.Visibility = Visibility.Visible;
+            button3.Visibility = Visibility.Visible;
+            button4.Visibility = Visibility.Visible;
+            button5.Visibility = Visibility.Visible;
+            button6.Visibility = Visibility.Visible;
+            newWindow = new finished(globalResults.AverageTurnAroundTime, globalResults.AverageWaitTime, globalResults.CPUUtilization, globalResults.WaitTimes, globalResults.TurnAroundTimes);
+            Drawing(globalEvents);
+        }
     }
 }
